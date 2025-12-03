@@ -192,10 +192,7 @@ def generate_launch_description():
             default_value="false",
             description="Whether the platform is started as a subcomponent",
         ),
-        DeclareLaunchArgument(
-            "tf_prefix",
-            default_value="", 
-            description="Arm identifier"),
+        DeclareLaunchArgument("tf_prefix", default_value="", description="Arm identifier"),
         DeclareLaunchArgument(
             name="srdf_file",
             default_value=get_package_share_directory("dynaarm_description")
