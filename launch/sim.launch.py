@@ -47,6 +47,7 @@ def launch_setup(context, *args, **kwargs):
 
     # Process URDF file
     doc = xacro.parse(open(LaunchConfiguration("urdf_file").perform(context)))
+    tf_prefix = LaunchConfiguration("tf_prefix").perform(context)
     xacro.process_doc(
         doc,
         mappings={
@@ -55,7 +56,7 @@ def launch_setup(context, *args, **kwargs):
             "dof": LaunchConfiguration("dof").perform(context),
             "covers": LaunchConfiguration("covers").perform(context),
             "version": LaunchConfiguration("version").perform(context),
-            "tf_prefix": LaunchConfiguration("tf_prefix").perform(context) + "/",
+            "tf_prefix": tf_prefix + "/" if tf_prefix else "",
         },
     )
 
@@ -143,7 +144,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             name="namespace",
-            default_value="dynaarm1",
+            default_value="",
         ),
         DeclareLaunchArgument(
             name="urdf_file",
@@ -179,7 +180,7 @@ def generate_launch_description():
             "initial_pose_yaw", default_value="0.0", description="Spawn rotation around axis z."
         ),
         DeclareLaunchArgument("world", default_value="duatic_empty", description="World name"),
-        DeclareLaunchArgument("tf_prefix", default_value="arm_1", description="Arm identifier"),
+        DeclareLaunchArgument("tf_prefix", default_value="", description="Arm identifier"),
     ]
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

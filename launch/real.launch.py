@@ -54,6 +54,7 @@ def launch_setup(context, *args, **kwargs):
             )
         )
     )
+    tf_prefix = LaunchConfiguration("tf_prefix").perform(context)
     xacro.process_doc(
         doc,
         mappings={
@@ -63,7 +64,7 @@ def launch_setup(context, *args, **kwargs):
             "covers": LaunchConfiguration("covers").perform(context),
             "version": LaunchConfiguration("version").perform(context),
             "ethercat_bus": LaunchConfiguration("ethercat_bus").perform(context),
-            "tf_prefix": LaunchConfiguration("tf_prefix").perform(context) + "/",
+            "tf_prefix": tf_prefix + "/" if tf_prefix else "",
         },
     )
 
@@ -191,7 +192,8 @@ def generate_launch_description():
             default_value="false",
             description="Whether the platform is started as a subcomponent",
         ),
-        DeclareLaunchArgument("tf_prefix", default_value="arm_1", description="Arm identifier"),
+        DeclareLaunchArgument(name="namespace", default_value=""),
+        DeclareLaunchArgument("tf_prefix", default_value="", description="Arm identifier"),
         DeclareLaunchArgument(
             name="srdf_file",
             default_value=get_package_share_directory("dynaarm_description")
