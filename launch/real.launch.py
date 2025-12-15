@@ -21,9 +21,8 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import os
 import xacro
-from ament_index_python import get_package_share_directory
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
@@ -46,14 +45,7 @@ def launch_setup(context, *args, **kwargs):
     pkg_duatic_control = FindPackageShare("duatic_control")
 
     # Process URDF file
-    pkg_dynaarm_description = FindPackageShare("dynaarm_single_example_description")
-    doc = xacro.parse(
-        open(
-            os.path.join(
-                pkg_dynaarm_description.perform(context), "urdf/dynaarm_single_example.urdf.xacro"
-            )
-        )
-    )
+    doc = xacro.parse(open(LaunchConfiguration("urdf_file_path").perform(context)))
     tf_prefix = LaunchConfiguration("tf_prefix").perform(context)
     xacro.process_doc(
         doc,
@@ -76,7 +68,7 @@ def launch_setup(context, *args, **kwargs):
             "dof": LaunchConfiguration("dof").perform(context),
             "covers": LaunchConfiguration("covers").perform(context),
             "version": LaunchConfiguration("version").perform(context),
-            "mode": "mock",
+            "mode": "real",
         },
     )
 
@@ -176,10 +168,12 @@ def generate_launch_description():
             choices=["arowana4", "baracuda12"],
             description="Select the desired version of robot ",
         ),
+        DeclareLaunchArgument(name="namespace", default_value="", description="Robot namespace"),
         DeclareLaunchArgument(
-            "gui",
-            default_value="True",
-            description="Start RViz2 automatically with this launch file.",
+            name="urdf_file_path",
+            default_value=get_package_share_directory("dynaarm_description")
+            + "/urdf/dynaarm_standalone.urdf.xacro",
+            description="Path to the robot URDF file",
         ),
         DeclareLaunchArgument(
             "ros2_control_params_arm",
@@ -190,9 +184,8 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "start_as_subcomponent",
             default_value="false",
-            description="Whether the platform is started as a subcomponent",
+            description="Whether the dynaarm is started as a subcomponent",
         ),
-        DeclareLaunchArgument(name="namespace", default_value=""),
         DeclareLaunchArgument("tf_prefix", default_value="", description="Arm identifier"),
         DeclareLaunchArgument(
             name="srdf_file",

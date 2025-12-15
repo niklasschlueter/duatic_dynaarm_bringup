@@ -45,7 +45,7 @@ def launch_setup(context, *args, **kwargs):
     pkg_duatic_control = FindPackageShare("duatic_control")
 
     # Process URDF file
-    doc = xacro.parse(open(LaunchConfiguration("urdf_file").perform(context)))
+    doc = xacro.parse(open(LaunchConfiguration("urdf_file_path").perform(context)))
     tf_prefix = LaunchConfiguration("tf_prefix").perform(context)
     xacro.process_doc(
         doc,
@@ -147,12 +147,6 @@ def generate_launch_description():
     # Declare the launch arguments
     declared_arguments = [
         DeclareLaunchArgument(
-            name="gui",
-            default_value="True",
-            choices=["True", "False"],
-            description="Flag to enable joint_state_publisher_gui",
-        ),
-        DeclareLaunchArgument(
             name="dof",
             choices=["1", "2", "3", "4", "5", "6"],
             default_value="6",
@@ -170,9 +164,10 @@ def generate_launch_description():
             description="Select the desired version of robot ",
         ),
         DeclareLaunchArgument(
-            name="urdf_file",
+            name="urdf_file_path",
             default_value=get_package_share_directory("dynaarm_description")
             + "/urdf/dynaarm_standalone.urdf.xacro",
+            description="Path to the robot URDF file",
         ),
         DeclareLaunchArgument(
             name="srdf_file",
@@ -183,7 +178,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "start_as_subcomponent",
             default_value="false",
-            description="Whether the platform is started as a subcomponent",
+            description="Whether the dynaarm is started as a subcomponent",
         ),
         DeclareLaunchArgument(
             "ros2_control_params_arm",
@@ -194,6 +189,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             name="namespace",
             default_value="",
+            description="Robot namespace",
         ),
         DeclareLaunchArgument("tf_prefix", default_value="", description="Arm identifier"),
     ]

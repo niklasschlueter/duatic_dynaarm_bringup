@@ -21,7 +21,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from ament_index_python import get_package_share_directory
+from ament_index_python.packages import get_package_share_directory
 import xacro
 from launch import LaunchDescription
 from launch.actions import (
@@ -46,7 +46,7 @@ def launch_setup(context, *args, **kwargs):
     pkg_duatic_simulation = FindPackageShare("duatic_simulation")
 
     # Process URDF file
-    doc = xacro.parse(open(LaunchConfiguration("urdf_file").perform(context)))
+    doc = xacro.parse(open(LaunchConfiguration("urdf_file_path").perform(context)))
     tf_prefix = LaunchConfiguration("tf_prefix").perform(context)
     xacro.process_doc(
         doc,
@@ -116,6 +116,15 @@ def launch_setup(context, *args, **kwargs):
                     "config_path": controllers_params,
                 }.items(),
             ),
+            # Emergency Stop
+            Node(
+                package="dynaarm_extensions",
+                executable="e_stop_node",
+                name="e_stop_node",
+                output="screen",
+                parameters=[{"emergency_stop_button": 9}],  # Change button index here
+                condition=UnlessCondition(LaunchConfiguration("start_as_subcomponent")),
+            ),
         ]
     )
 
@@ -142,19 +151,12 @@ def generate_launch_description():
             choices=["arowana4", "baracuda12"],
             description="Select the desired version of robot ",
         ),
+        DeclareLaunchArgument(name="namespace", default_value="", description="Robot namespace"),
         DeclareLaunchArgument(
-            name="namespace",
-            default_value="",
-        ),
-        DeclareLaunchArgument(
-            name="urdf_file",
+            name="urdf_file_path",
             default_value=get_package_share_directory("dynaarm_description")
             + "/urdf/dynaarm_standalone.urdf.xacro",
-        ),
-        DeclareLaunchArgument(
-            "gz_bridge_config",
-            default_value=get_package_share_directory("dynaarm_bringup") + "/config/gz_bridge.yaml",
-            description="Path to the ros_gz_bridge config file",
+            description="Path to the robot URDF file",
         ),
         DeclareLaunchArgument(
             "ros2_control_params_arm",
@@ -165,7 +167,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "start_as_subcomponent",
             default_value="false",
-            description="Whether the platform is started as a subcomponent",
+            description="Whether the dynaarm is started as a subcomponent",
         ),
         DeclareLaunchArgument(
             "initial_pose_x", default_value="0.0", description="Spawn position in axis x."
@@ -179,7 +181,6 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "initial_pose_yaw", default_value="0.0", description="Spawn rotation around axis z."
         ),
-        DeclareLaunchArgument("world", default_value="duatic_empty", description="World name"),
         DeclareLaunchArgument("tf_prefix", default_value="", description="Arm identifier"),
     ]
 
