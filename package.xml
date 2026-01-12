@@ -18,6 +18,7 @@
   <exec_depend>dynaarm_hardware_interface_base</exec_depend>
   <exec_depend>dynaarm_extensions</exec_depend>
   <exec_depend>dynaarm_msgs</exec_depend>
+  <exec_depend>nav2_common</exec_depend>
   <exec_depend>xacro</exec_depend>
 
   <export>
