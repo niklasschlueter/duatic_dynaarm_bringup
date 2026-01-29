@@ -7,15 +7,15 @@
         state: active
 
       dynaarm_status_broadcaster<suffix>:
-        type: dynaarm_controllers/StatusBroadcaster
+        type: duatic_dynaarm_controllers/StatusBroadcaster
         state: active
 
       gravity_compensation_controller<suffix>:
-        type: dynaarm_controllers/GravityCompensationController
+        type: duatic_dynaarm_controllers/GravityCompensationController
         state: active
 
       freedrive_controller<suffix>:
-        type: dynaarm_controllers/FreeDriveController
+        type: duatic_dynaarm_controllers/FreeDriveController
         state: inactive
 
       joint_trajectory_controller<suffix>:
@@ -23,11 +23,11 @@
         state: inactive
 
       freeze_controller<suffix>:
-        type: dynaarm_controllers/FreezeController
+        type: duatic_dynaarm_controllers/FreezeController
         state: active
 
       cartesian_pose_controller<suffix>:
-        type: dynaarm_controllers/CartesianPoseController
+        type: duatic_dynaarm_controllers/CartesianPoseController
         state: inactive
 
 /**/joint_state_broadcaster<suffix>:

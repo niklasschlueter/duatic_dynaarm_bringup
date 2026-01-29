@@ -1,4 +1,4 @@
-# Copyright 2025 Duatic AG
+# Copyright 2026 Duatic AG
 #
 # Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 # the following conditions are met:
@@ -130,7 +130,7 @@ def launch_setup(context, *args, **kwargs):
             ),
             # Emergency Stop
             Node(
-                package="dynaarm_extensions",
+                package="duatic_dynaarm_extensions",
                 executable="e_stop_node",
                 name="e_stop_node",
                 output="screen",
@@ -171,13 +171,13 @@ def generate_launch_description():
         DeclareLaunchArgument(name="namespace", default_value="", description="Robot namespace"),
         DeclareLaunchArgument(
             name="urdf_file_path",
-            default_value=get_package_share_directory("dynaarm_description")
+            default_value=get_package_share_directory("duatic_dynaarm_description")
             + "/urdf/dynaarm_standalone.urdf.xacro",
             description="Path to the robot URDF file",
         ),
         DeclareLaunchArgument(
             "ros2_control_params_arm",
-            default_value=get_package_share_directory("dynaarm_bringup")
+            default_value=get_package_share_directory("duatic_dynaarm_bringup")
             + "/config/controllers.yaml",
             description="Path to the controllers config file",
         ),
@@ -189,7 +189,7 @@ def generate_launch_description():
         DeclareLaunchArgument("tf_prefix", default_value="", description="Arm identifier"),
         DeclareLaunchArgument(
             name="srdf_file",
-            default_value=get_package_share_directory("dynaarm_description")
+            default_value=get_package_share_directory("duatic_dynaarm_description")
             + "/config/dynaarm.srdf",
             description="Path to the robot SRDF file",
         ),

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>dynaarm_bringup</name>
+  <name>duatic_dynaarm_bringup</name>
   <version>0.0.0</version>
   <description>Starts up all modules for the dynaarm</description>
   <maintainer email="mbloechlinger@duatic.com">Marc Blöchlinger</maintainer>
@@ -12,12 +12,11 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
-  <exec_depend>dynaarm_description</exec_depend>
-  <exec_depend>dynaarm_controllers</exec_depend>
-  <exec_depend>dynaarm_driver</exec_depend>
-  <exec_depend>dynaarm_hardware_interface_base</exec_depend>
-  <exec_depend>dynaarm_extensions</exec_depend>
-  <exec_depend>dynaarm_msgs</exec_depend>
+  <exec_depend>duatic_dynaarm_description</exec_depend>
+  <exec_depend>duatic_dynaarm_controllers</exec_depend>
+  <exec_depend>duatic_dynaarm_driver</exec_depend>
+  <exec_depend>duatic_dynaarm_extensions</exec_depend>
+  <exec_depend>duatic_dynaarm_msgs</exec_depend>
   <exec_depend>nav2_common</exec_depend>
   <exec_depend>xacro</exec_depend>
 

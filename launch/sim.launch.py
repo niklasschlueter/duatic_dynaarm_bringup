@@ -142,7 +142,7 @@ def launch_setup(context, *args, **kwargs):
             ),
             # Emergency Stop
             Node(
-                package="dynaarm_extensions",
+                package="duatic_dynaarm_extensions",
                 executable="e_stop_node",
                 name="e_stop_node",
                 output="screen",
@@ -178,13 +178,13 @@ def generate_launch_description():
         DeclareLaunchArgument(name="namespace", default_value="", description="Robot namespace"),
         DeclareLaunchArgument(
             name="urdf_file_path",
-            default_value=get_package_share_directory("dynaarm_description")
+            default_value=get_package_share_directory("duatic_dynaarm_description")
             + "/urdf/dynaarm_standalone.urdf.xacro",
             description="Path to the robot URDF file",
         ),
         DeclareLaunchArgument(
             "ros2_control_params_arm",
-            default_value=get_package_share_directory("dynaarm_bringup")
+            default_value=get_package_share_directory("duatic_dynaarm_bringup")
             + "/config/controllers_sim.yaml",
             description="Path to the controllers config file",
         ),
