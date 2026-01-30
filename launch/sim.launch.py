@@ -178,8 +178,6 @@ def generate_launch_description():
         DeclareLaunchArgument(name="namespace", default_value="", description="Robot namespace"),
         DeclareLaunchArgument(
             name="urdf_file_path",
-            default_value=get_package_share_directory("duatic_dynaarm_description")
-            + "/urdf/dynaarm_standalone.urdf.xacro",
             description="Path to the robot URDF file",
         ),
         DeclareLaunchArgument(
