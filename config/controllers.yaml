@@ -26,6 +26,10 @@
         type: duatic_dynaarm_controllers/FreezeController
         state: active
 
+      safety_monitor_controller<suffix>:
+        type: duatic_dynaarm_controllers/SafetyMonitorController
+        state: active
+
       cartesian_pose_controller<suffix>:
         type: duatic_dynaarm_controllers/CartesianPoseController
         state: inactive
@@ -104,6 +108,43 @@
   ros__parameters:
     names:
       - <prefix>DynaarmSystem
+
+/**/safety_monitor_controller<suffix>:
+  ros__parameters:
+    joints:
+      - <prefix>shoulder_rotation
+      - <prefix>shoulder_flexion
+      - <prefix>elbow_flexion
+      - <prefix>forearm_rotation
+      - <prefix>wrist_flexion
+      - <prefix>wrist_rotation
+
+    # Joint position limits (read from URDF)
+    check_joint_limits: true
+    joint_limit_tolerance: 0.0  # rad - safety margin applied to URDF limits
+
+    # Optional: Joint velocity limits (rad/s)
+    check_velocity: false
+    max_joint_velocities: [10.0, 10.0, 10.0, 10.0, 10.0, 10.0]
+
+    # Controller to activate on safety violation
+    freeze_controller_name: <prefix>freeze_controller
+
+    # Behavior: stay frozen until manually released
+    latching_mode: true
+
+    # Status publishing rate (Hz)
+    status_publish_rate: 10.0
+
+    # Workspace constraints (Cartesian limits)
+    check_workspace: true  # Enable workspace checking
+    end_effector_frame: <prefix>flange
+    workspace_x_min: -1.0  # meters
+    workspace_x_max: 1.0
+    workspace_y_min: -1.0
+    workspace_y_max: 1.0
+    workspace_z_min: 0.2  # Protect from table (e.g., table at z=0)
+    workspace_z_max: 2.0
 
 /**/cartesian_pose_controller<suffix>:
   ros__parameters:
