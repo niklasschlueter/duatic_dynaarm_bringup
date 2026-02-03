@@ -146,6 +146,12 @@
     workspace_z_min: 0.2  # Protect from table (e.g., table at z=0)
     workspace_z_max: 2.0
 
+    # External torque monitoring (collision detection)
+    check_external_torque: true  # Disabled by default - requires gravity compensation mode
+    external_torque_threshold_single: 1.0  # Nm - single threshold for all joints
+    external_torque_thresholds: [0.0]  # Per-joint thresholds (Nm) - use [0.0] to use single threshold
+    torque_residual_filter_window: 10  # Moving average window size for noise reduction
+
 /**/cartesian_pose_controller<suffix>:
   ros__parameters:
     joints:
